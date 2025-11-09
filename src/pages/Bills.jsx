@@ -118,8 +118,27 @@ export default function Bills() {
   // 💾 Submit new bill
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setMessage("");
+
+    // 🛑 Validation
+    if (!formData.customerName.trim() || !formData.phone.trim()) {
+      setMessage("❌ Please enter customer name and phone.");
+      return;
+    }
+
+    if (items.length === 0) {
+      setMessage("❌ Please add at least one item before saving the bill.");
+      return;
+    }
+
+    if (formData.paymentType === "debit") {
+      if (!formData.paidAmount || Number(formData.paidAmount) <= 0) {
+        setMessage("❌ Please enter the amount paid for debit payment.");
+        return;
+      }
+    }
+
+    setLoading(true);
     try {
       await addBill({
         ...formData,
@@ -134,6 +153,8 @@ export default function Bills() {
       });
       setMessage("✅ Bill added successfully!");
       setItems([]);
+      setBills([]); // <--- clear history section
+    setTotalDue(0);
       setFormData({
         customerName: "",
         phone: "",

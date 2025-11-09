@@ -12,6 +12,7 @@ export default function AddItemPage() {
     schemeActive: false,
     schemeQty: "",
     schemeDiscount: "",
+    purchasePrice: "",
   });
 
   const [items, setItems] = useState([]);
@@ -50,6 +51,7 @@ export default function AddItemPage() {
         schemeDiscount: form.schemeActive
           ? Number(form.schemeDiscount || 0)
           : 0,
+        purchasePrice: Number(form.purchasePrice || 0),
         createdAt: new Date(),
       });
 
@@ -61,6 +63,7 @@ export default function AddItemPage() {
         schemeActive: false,
         schemeQty: "",
         schemeDiscount: "",
+        purchasePrice: "",
       });
       fetchItems();
     } catch (err) {
@@ -83,6 +86,7 @@ export default function AddItemPage() {
         schemeDiscount: form.schemeActive
           ? Number(form.schemeDiscount || 0)
           : 0,
+        purchasePrice: Number(form.purchasePrice || 0),
       });
       alert("✅ Item updated!");
       setEditingItem(null);
@@ -93,6 +97,7 @@ export default function AddItemPage() {
         schemeActive: false,
         schemeQty: "",
         schemeDiscount: "",
+        purchasePrice: "",
       });
       fetchItems();
     } catch (err) {
@@ -122,6 +127,7 @@ export default function AddItemPage() {
       schemeActive: item.schemeActive,
       schemeQty: item.schemeQty,
       schemeDiscount: item.schemeDiscount,
+      purchasePrice: item.purchasePrice,
     });
   };
 
@@ -150,6 +156,15 @@ export default function AddItemPage() {
           placeholder="Price"
           value={form.price}
           onChange={(e) => setForm({ ...form, price: e.target.value })}
+          className="p-3 border rounded-lg w-full"
+          required
+        />
+
+        <input
+          type="number"
+          placeholder="Purchase Price"
+          value={form.purchasePrice}
+          onChange={(e) => setForm({ ...form, purchasePrice: e.target.value })}
           className="p-3 border rounded-lg w-full"
           required
         />
@@ -219,6 +234,7 @@ export default function AddItemPage() {
                   schemeActive: false,
                   schemeQty: "",
                   schemeDiscount: "",
+                  purchasePrice: "",
                 });
               }}
               className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 px-6 rounded-lg"
@@ -240,8 +256,10 @@ export default function AddItemPage() {
               <tr className="bg-gray-100 text-left">
                 <th className="p-3">Name</th>
                 <th className="p-3">Price</th>
+                <th className="p-3">Purchase Price</th>
                 <th className="p-3">Stock</th>
                 <th className="p-3">Scheme</th>
+                <th className="p-3">Claim</th>
                 <th className="p-3">Created</th>
                 <th className="p-3">Updated</th>
                 <th className="p-3 text-center">Actions</th>
@@ -252,6 +270,7 @@ export default function AddItemPage() {
                 <tr key={i.id} className="border-b hover:bg-gray-50">
                   <td className="p-3">{i.name}</td>
                   <td className="p-3">Rs. {i.price}</td>
+                  <td className="p-3">Rs. {i.purchasePrice}</td>
                   <td className="p-3">{i.stock}</td>
                   <td className="p-3 text-sm">
                     {i.schemeActive ? (
@@ -262,6 +281,8 @@ export default function AddItemPage() {
                       "—"
                     )}
                   </td>
+                  {console.log(i)}
+                  <td className="p-3">{i.claimed}</td>
                   <td className="p-3 text-sm text-gray-500">
                     {i.createdAt?.seconds
                       ? new Date(i.createdAt.seconds * 1000).toLocaleString()
